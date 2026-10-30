@@ -1,32 +1,40 @@
-[**简体中文**](README.md) · [English](README.en.md)
-
 # my-dsh-plugins
 
-个人 **[DeepSeek Harness](https://github.com/deepseek-ai/dsh)** 插件合集——一个仓库，每个插件一个子目录。
+Personal collection of plugins for **[DeepSeek Harness](https://github.com/deepseek-ai/dsh)** — one repository, one subdirectory per plugin.
 
-每个子目录都是完整可安装的 DSH bundle：独立的 `package.json`、补丁文件、README，需要时还带客户端那一半。
+Each subdirectory is a self-contained DSH bundle: its own `package.json`, patch file, README, and (where relevant) client half.
 
-| 插件 | 作用 | |
+| Plugin | What it does | |
 | --- | --- | --- |
-| [`dsh-safe-upgrade`](./dsh-safe-upgrade) | 在**更新 Harness 之前**，把每个已启用的插件与新版本逐个核对，把新版本会拒绝加载的插件先关掉。侧栏底部加一个「安全升级」入口。 | ![](./dsh-safe-upgrade/assets/dialog.png) |
-| [`dsh-global-prompt`](./dsh-global-prompt) | 设置页里的一个分区，用来编辑注入每个 agent 会话的用户级 `AGENTS.md`。 | ![](./dsh-global-prompt/assets/screenshot-1.png) |
+| [`dsh-safe-upgrade`](./dsh-safe-upgrade) | Checks every enabled plugin against the next harness release **before** updating, and turns off the ones that release would refuse to load. Adds a 安全升级 entry in the sidebar footer. | |
+| [`dsh-global-prompt`](./dsh-global-prompt) | A Settings section that edits the user-level `AGENTS.md` injected into every agent session. | ![](./dsh-global-prompt/assets/screenshot-1.png) |
 
-## 安装本仓库的插件
+## Layout
 
-DeepSeek Harness 的 profile 本质是 `%USERPROFILE%\.dsh\profiles\<name>\` 下的 pnpm 工程。本仓库的插件以**链接依赖**的方式安装，改代码不用重新发布：
+```
+my-dsh-plugins/
+├─ dsh-safe-upgrade/    host + client halves, patch, README
+├─ dsh-global-prompt/   Settings section plugin, patch, assets
+├─ LICENSE              MIT, applies to every plugin in this repository
+└─ README.md
+```
 
-1. 克隆仓库（放在插件目录里，和 profile 的链接路径对得上）：
+## Installing a plugin from here
+
+DeepSeek Harness profiles are pnpm projects under `%USERPROFILE%\.dsh\profiles\<name>\`. A plugin from this repository is installed as a **linked dependency**, so edits take effect without republishing:
+
+1. Clone the repository:
 
    ```powershell
-   git clone https://github.com/Y-King666/my-dsh-plugins.git C:\Users\<you>\.dsh\plugins\my-dsh-plugins
+   git clone https://github.com/Y-King666/my-dsh-plugins.git C:\Users\<you>\Documents\my-dsh-plugins
    ```
 
-2. 在 `%USERPROFILE%\.dsh\profiles\<profile>\package.json` 里，把子目录加为链接依赖，**并**登记成一个 bundle：
+2. In `%USERPROFILE%\.dsh\profiles\<profile>\package.json`, add the subdirectory as a link dependency **and** list it as a bundle:
 
    ```jsonc
    {
      "dependencies": {
-       "dsh-safe-upgrade": "link:C:/Users/<you>/.dsh/plugins/my-dsh-plugins/dsh-safe-upgrade"
+       "dsh-safe-upgrade": "link:C:/Users/<you>/Documents/my-dsh-plugins/dsh-safe-upgrade"
      },
      "dsh": {
        "profile": {
@@ -36,19 +44,19 @@ DeepSeek Harness 的 profile 本质是 `%USERPROFILE%\.dsh\profiles\<name>\` 下
    }
    ```
 
-3. 安装并重启：
+3. Install and restart:
 
    ```powershell
    cd $env:USERPROFILE\.dsh\profiles\<profile>
    pnpm install
    ```
 
-桌面端的插件管理器（或 DSH 里的 `plugin_manager` 工具）也能替你加链接依赖、开关 bundle。
+The desktop app's built-in plugin manager (or the `plugin_manager` tool inside DSH) can also add a linked spec and toggle the bundle for you.
 
-## 关于升级
+## Note on upgrades
 
-DSH 装载 profile 的 bundle 层时会过一道兼容闸门：声明了不满足当前运行版本的 `@deepseek-ai/dsh*` 范围的 bundle，会被**整层跳过**。这就是为什么 Harness 一升级，插件看起来会"凭空消失"——[`dsh-safe-upgrade`](./dsh-safe-upgrade) 存在的意义，就是把这件事从"升级之后"挪到"升级之前"。
+DSH loads a profile's bundle layers through a compatibility gate: a bundle whose declared `@deepseek-ai/dsh*` requirements do not accept the running version is skipped as a whole. That is why plugins can appear to vanish after a harness update — see [`dsh-safe-upgrade`](./dsh-safe-upgrade), which exists to catch exactly that before the update instead of after.
 
-## 许可
+## License
 
 MIT © 2026 Y-King666

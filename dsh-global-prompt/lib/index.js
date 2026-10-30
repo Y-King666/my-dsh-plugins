@@ -1,8 +1,8 @@
 /**
  * Global prompt (宿主半边).
  *
- * 作用域只有一件事：把用户级全局提示词文件（`$DSH_HOME/AGENTS.md`，本机即
- * `C:\Users\zhang\.dsh\AGENTS.md`）暴露给设置页，并提供读写它的 HTTP 路由。
+ * 作用域只有一件事：把用户级全局提示词文件（`$DSH_HOME/AGENTS.md`）暴露给设置页，
+ * 并提供读写它的 HTTP 路由。
  *
  * 为什么不需要自己写“注入”：
  *   `@deepseek-ai/dsh-agent-instructions`（由 dsh-base 默认启用）在会话开始时会读取

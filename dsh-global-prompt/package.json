@@ -13,7 +13,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Y-King666/dsh-global-prompt.git"
+    "url": "git+https://github.com/Y-King666/my-dsh-plugins.git",
+    "directory": "dsh-global-prompt"
   },
   "type": "module",
   "main": "lib/index.js",
