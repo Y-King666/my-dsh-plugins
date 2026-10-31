@@ -60,8 +60,11 @@ window.__ModuleLoader__.load({
         h('path', { d: 'M3.2 3.2 8.8 8.8 M8.8 3.2 3.2 8.8', fill: 'none', stroke: '#fff', strokeWidth: 1.9, strokeLinecap: 'round' }))
     }
 
-    function Shield({ size = 16 }) {
-      return h('svg', { width: size, height: size, viewBox: '0 0 16 16', 'aria-hidden': true },
+    function Shield({ size = 16, highlighted = false }) {
+      const style = highlighted
+        ? { color: T.success, filter: 'drop-shadow(0 0 4px rgba(34, 197, 94, 0.45))' }
+        : undefined
+      return h('svg', { width: size, height: size, viewBox: '0 0 16 16', 'aria-hidden': true, style },
         h('path', {
           d: 'M8 1.8 13.4 4v4.1c0 3-2.2 5.4-5.4 6-3.2-.6-5.4-3-5.4-6V4L8 1.8Z',
           fill: 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinejoin: 'round',
@@ -232,7 +235,7 @@ window.__ModuleLoader__.load({
         title: '安全升级：先检查插件适配性，再更新 Harness',
         onClick: () => setOpen(true),
       },
-        h(Shield, { size: 16 }),
+        h(Shield, { size: 16, highlighted: true }),
         wide ? h('span', null, '安全升级') : null)
 
       if (!open) return button
