@@ -1,0 +1,3 @@
+- insert:
+    - id: safe-upgrade
+      name: dsh-safe-upgrade

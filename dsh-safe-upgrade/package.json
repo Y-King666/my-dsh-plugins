@@ -1,0 +1,42 @@
+{
+  "name": "dsh-safe-upgrade",
+  "version": "0.1.0",
+  "description": "Safe upgrade for DeepSeek Harness: check every enabled plugin against the next release before updating, and turn off the ones that release would refuse to load.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "upgrade",
+    "compatibility"
+  ],
+  "author": "Y-King666",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Y-King666/my-dsh-plugins.git",
+    "directory": "dsh-safe-upgrade"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "core.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}
